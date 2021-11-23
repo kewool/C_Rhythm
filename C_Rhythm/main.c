@@ -10,7 +10,7 @@
 static int g_nScreenIndex;
 static HANDLE g_hScreen[2];
 
-char mapList[31][102];
+char* mapList;
 char*** map;
 
 int mapCount = 0;
@@ -84,13 +84,13 @@ void ReadMapList() {
 
     for (int i = 0;result != -1;i++)
     {
-        sprintf(&mapList[i], "  %s\n", fd.name);
-        mapList[i][strlen(mapList[i]) - 5] = '\n';
-        mapList[i][strlen(mapList[i]) - 4] = '\0';
+        sprintf(&mapList, "  %s\n", fd.name);
+        /*mapList[i][strlen(mapList[i]) - 5] = '\n';
+        mapList[i][strlen(mapList[i]) - 4] = '\0';*/
         mapCount++;
         result = _findnext(handle, &fd);
         if (mapCount >= 30) {
-            sprintf(&mapList[30], "  You can load files only 30.\n");
+            sprintf(&mapList, "  You can load files only 30.\n\0");
             result = -1;
         }
     }
@@ -131,11 +131,15 @@ void SelectMap() {
 
 int SelectMapRender(int y)
 {
-    Gotoxy(0, y_SelectMapRender);
+    ScreenClear();
+    ScreenPrint(0, 0, mapList);
+    ScreenFlipping();
+
+    /*Gotoxy(0, y_SelectMapRender);
     printf(" ");
     Gotoxy(0, y);
     printf(">");
-    y_SelectMapRender = y;
+    y_SelectMapRender = y;*/
 
     //ScreenClear();
     //if (CurTime - OldTime >= 1000) // 출력 코드
