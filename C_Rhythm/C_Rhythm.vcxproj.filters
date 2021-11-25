@@ -18,10 +18,27 @@
     <ClCompile Include="main.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="func.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="game.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="map\밀크크라운 온 소네치카 - nameless.kwl">
       <Filter>리소스 파일</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="func.h">
+      <Filter>리소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>리소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>리소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

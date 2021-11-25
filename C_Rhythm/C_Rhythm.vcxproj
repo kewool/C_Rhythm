@@ -139,10 +139,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="func.c" />
+    <ClCompile Include="game.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="map\밀크크라운 온 소네치카 - nameless.kwl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="func.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
