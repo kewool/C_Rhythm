@@ -1,10 +1,12 @@
 #include "game.h"
 
 char mapList[31][100];
-char*** map;
 
 int mapCount = 0;
 int y_SelectMapRender;
+int mapNode[10][20000] = {0};
+double speed;
+
 
 void Gotoxy(int x, int y) {
     COORD Pos = { x, y };
@@ -112,18 +114,122 @@ void SelectMapRender(int y)
 
 
 void MapLoader(int y) {
-    char mapLoc[108] = ".\\map\\";
+    char mapLoc[106] = ".\\map\\";
     char buffer[BARSIZE];
+    char** splitText, **chordSplit;
+    int lineNum, spaceCount, rest, nodeNum, nodeCount, chord;
     strcat(mapLoc, mapList[y]);
     mapLoc[strlen(mapLoc) - 1] = '\0';
     FILE* map = fopen(mapLoc, "r");
-    ScreenClear();
+    fgets(buffer, BARSIZE, map);
+    speed = 0.125 / (atoi(buffer) / 60);
+    
+
     while (strcmp(buffer, "finish")) {
         fgets(buffer, BARSIZE, map);
-
+        if (!strcmp(buffer, "\n") || !strcmp(buffer, "&"))
+            continue;
+        else if (strstr(buffer, "start") != NULL) {
+            splitText = split(buffer, '#');
+            lineNum = atoi(splitText[1]) - 1;
+            nodeCount = 0;
+        }
+        else {
+            for (int i = 0; buffer[i] != '\0'; i++)
+                if (buffer[i] == ' ') spaceCount++;
+            splitText = split(buffer, ' ');
+            spaceCount = 1;
+            for (int i = 0; i < spaceCount; i++) {
+                rest = 0;
+                if (strstr(splitText[i], "r") != NULL) rest = 1;
+                nodeNum = atoi(splitText[i]);
+                if (rest) {
+                    switch (nodeNum) {
+                    case 0:
+                        for (int j = 0; j < 32; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 1:
+                        for (int j = 0; j < 16; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 2:
+                        for (int j = 0; j < 8; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 3:
+                        for (int j = 0; j < 4; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 4:
+                        for (int j = 0; j < 2; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 5:
+                        mapNode[lineNum][nodeCount] = 1;
+                        nodeCount++; 
+                        break;
+                    }
+                }
+                else {
+                    chord = 1;
+                    if (strstr(splitText[i], "*") != NULL) {
+                        chordSplit = split(splitText[i], '*');
+                        chord = atoi(chordSplit[1]);
+                    }
+                    switch (nodeNum) {
+                    case 0:
+                        mapNode[lineNum][nodeCount] = 1 + chord;
+                        nodeCount++;
+                        for (int j = 0; j < 31; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 1:
+                        mapNode[lineNum][nodeCount] = 1 + chord;
+                        nodeCount++;
+                        for (int j = 0; j < 15; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 2:
+                        mapNode[lineNum][nodeCount] = 1 + chord;
+                        nodeCount++;
+                        for (int j = 0; j < 7; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 3:
+                        mapNode[lineNum][nodeCount] = 1 + chord;
+                        nodeCount++;
+                        for (int j = 0; j < 3; j++) {
+                            mapNode[lineNum][nodeCount] = 1;
+                            nodeCount++;
+                        }break;
+                    case 4:
+                        mapNode[lineNum][nodeCount] = 1 + chord;
+                        nodeCount++;
+                        mapNode[lineNum][nodeCount] = 1;
+                        nodeCount++; 
+                        break;
+                    case 5:
+                        mapNode[lineNum][nodeCount] = 1 + chord;
+                        nodeCount++;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
-    ScreenFlipping();
+    free(splitText);
+    free(chordSplit);
+    
 }
 
 void SelectMap() {

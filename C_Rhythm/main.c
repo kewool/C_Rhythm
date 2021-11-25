@@ -2,7 +2,7 @@
 
 int main()
 {
-    system("mode con cols=200 lines=32 | title kewool");
+    system("mode con cols=140 lines=32 | title kewool");
     ScreenInit();
     
     while (1) {
