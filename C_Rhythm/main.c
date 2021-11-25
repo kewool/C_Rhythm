@@ -10,11 +10,11 @@
 static int g_nScreenIndex;
 static HANDLE g_hScreen[2];
 
-char* mapList;
+char mapList[31][100];
 char*** map;
 
 int mapCount = 0;
-int y_SelectMapRender = 0;
+int y_SelectMapRender;
 
 
 
@@ -77,20 +77,31 @@ void ReadMapList() {
     long handle;
     int result = 0;
     handle = _findfirst(".\\map\\*.kwl", &fd);
+    mapCount = 0;
     if (handle == -1)
     {
         sprintf(mapList[0], "No map files.\n");
     }
-
+    
     for (int i = 0;result != -1;i++)
     {
-        sprintf(&mapList, "  %s\n", fd.name);
+
+        /*strcat(mapList[i], "  ");
+        strcat(mapList[i], fd.name);
+        strcat(mapList[i], "\n\0");*/
+
+        /*strcat(mapList, "  ");
+        strcat(mapList, fd.name);
+        strcat(mapList, "\n");*/
+
+        sprintf(mapList[i], "%s\n", fd.name);
         /*mapList[i][strlen(mapList[i]) - 5] = '\n';
         mapList[i][strlen(mapList[i]) - 4] = '\0';*/
+
         mapCount++;
         result = _findnext(handle, &fd);
         if (mapCount >= 30) {
-            sprintf(&mapList, "  You can load files only 30.\n\0");
+            sprintf(mapList, "  You can load files only 30.\n");
             result = -1;
         }
     }
@@ -100,12 +111,76 @@ void ReadMapList() {
 
 void CreateMain() {
     ReadMapList();
-    system("mode con cols=200 lines=32 | title kewool");
-    for (int i = 0; i < mapCount+1; i++) {
-        printf("%s", mapList[i]);
+    char mapName[102];
+    y_SelectMapRender = 0;
+    for (int i = 0; i < mapCount; i++) {
+        sprintf(mapName, "  %s", mapList[i]);
+        mapName[strlen(mapName) - 5] = '\n';
+        mapName[strlen(mapName) - 4] = '\0';
+        printf("%s", mapName);
+        /*sprintf(mapName, "  %s", mapList[i]);
+        mapName[strlen(mapName) - 5] = '\n';
+        mapName[strlen(mapName) - 4] = '\0';
+
+        ScreenPrint(0, i, mapName);
+        ScreenFlipping();
+        ScreenPrint(0, i, mapName);*/
     }
+    //printf("%s", mapList);
     Gotoxy(0, 0);
     printf(">");
+    /*ScreenPrint(0, 0, ">");
+    ScreenFlipping();*/
+}
+
+void SelectMapRender(int y)
+{
+    //if (y != y_SelectMapRender) {
+    //    //ScreenClear();
+    //    if (y > y_SelectMapRender) {
+    //        ScreenPrint(0, y_SelectMapRender - 1, " ");
+    //    }
+    //    else if (y < y_SelectMapRender) {
+    //        ScreenPrint(0, y_SelectMapRender + 1, " ");
+    //    }
+    //    ScreenPrint(0, y, ">");
+    //    ScreenFlipping();
+    //    y_SelectMapRender = y;
+    //}
+
+    if (y != y_SelectMapRender) {
+        Gotoxy(0, y_SelectMapRender);
+        printf(" ");
+        Gotoxy(0, y);
+        printf(">");
+        y_SelectMapRender = y;
+    }
+
+    //ScreenClear();
+    //if (CurTime - OldTime >= 1000) // 출력 코드
+    //{
+    //    sprintf(FPSTextInfo, "FPS : %d", g_numofFPS);
+    //    OldTime = CurTime;
+    //    g_numofFPS = 0;
+    //}
+
+    //ScreenPrint(0, 0, FPSTextInfo);
+    //ScreenFlipping();
+}
+
+
+void MapLoader(int y) {
+    char mapLoc[108] = ".\\map\\";
+    char buffer[256];
+    strcat(mapLoc, mapList[y]);
+    mapLoc[strlen(mapLoc)-1] = '\0';
+    FILE* map = fopen(mapLoc, "r");
+    fgets(buffer, 256, map);
+    ScreenClear();
+    ScreenPrint(0, 0, buffer);
+    ScreenFlipping();
+    system("pause");
+    system("resume");
 }
 
 void SelectMap() {
@@ -122,47 +197,25 @@ void SelectMap() {
             SelectMapRender(y);
         }
         if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
-
+            break;
         }
-
-        
     }
+
+    MapLoader(y);
 }
 
-int SelectMapRender(int y)
-{
-    ScreenClear();
-    ScreenPrint(0, 0, mapList);
-    ScreenFlipping();
-
-    /*Gotoxy(0, y_SelectMapRender);
-    printf(" ");
-    Gotoxy(0, y);
-    printf(">");
-    y_SelectMapRender = y;*/
-
-    //ScreenClear();
-    //if (CurTime - OldTime >= 1000) // 출력 코드
-    //{
-    //    sprintf(FPSTextInfo, "FPS : %d", g_numofFPS);
-    //    OldTime = CurTime;
-    //    g_numofFPS = 0;
-    //}
-
-    //ScreenPrint(0, 0, FPSTextInfo);
-    //ScreenFlipping();
-}
 
 void Cursor()
 {
     CONSOLE_CURSOR_INFO cursorInfo = { 0, };
-    cursorInfo.dwSize = 1; //커서 굵기 (1 ~ 100)
-    cursorInfo.bVisible = FALSE; //커서 Visible TRUE(보임) FALSE(숨김)
+    cursorInfo.dwSize = 1;
+    cursorInfo.bVisible = FALSE;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
 int main()
 {
+    system("mode con cols=200 lines=32 | title kewool");
     ScreenInit();
     Cursor();
     while (1) {
