@@ -2,7 +2,7 @@
 
 int main()
 {
-    //srand(time(NULL));
+    srand(time(NULL));
     system("mode con cols=140 lines=32 | title kewool");
     ScreenInit();
     
