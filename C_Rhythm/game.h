@@ -7,7 +7,7 @@
 void Gotoxy(int x, int y);
 void ReadMapList();
 void CreateMain();
-void SelectMapRender(int y);
+void SelectRender(int y);
 void MapLoader(int y);
 void SelectMap();
-
+void StartGame(int diffNum);

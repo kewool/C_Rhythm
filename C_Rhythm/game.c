@@ -3,9 +3,11 @@
 char mapList[31][100];
 
 int mapCount = 0;
-int y_SelectMapRender;
+int lineNum;
+int y_SelectRender;
 int mapNode[10][20000] = {0};
 double speed;
+
 
 
 void Gotoxy(int x, int y) {
@@ -55,7 +57,7 @@ void CreateMain() {
     ScreenFlipping();
     ScreenClear();
     char mapName[102];
-    y_SelectMapRender = 0;
+    y_SelectRender = 0;
     for (int i = 0; i < mapCount; i++) {
         /*sprintf(mapName, "  %s", mapList[i]);
         mapName[strlen(mapName) - 5] = '\n';
@@ -77,19 +79,19 @@ void CreateMain() {
     ScreenFlipping();
 }
 
-void SelectMapRender(int y)
+void SelectRender(int y)
 {
-    if (y != y_SelectMapRender) {
+    if (y != y_SelectRender) {
         //ScreenClear();
-        if (y > y_SelectMapRender) {
-            ScreenPrint(0, y_SelectMapRender - 1, " ");
+        if (y > y_SelectRender) {
+            ScreenPrint(0, y_SelectRender - 1, " ");
         }
-        else if (y < y_SelectMapRender) {
-            ScreenPrint(0, y_SelectMapRender + 1, " ");
+        else if (y < y_SelectRender) {
+            ScreenPrint(0, y_SelectRender + 1, " ");
         }
         ScreenPrint(0, y, ">");
         ScreenFlipping();
-        y_SelectMapRender = y;
+        y_SelectRender = y;
     }
 
     /*if (y != y_SelectMapRender) {
@@ -112,17 +114,66 @@ void SelectMapRender(int y)
     //ScreenFlipping();
 }
 
+void StartGame(int diffNum) {
+    ScreenClear();
+    for (int i = 0; i < diffNum + 1; i++) {
+
+    }
+}
+
+void SelectDiff() {
+    /*for (int i = 0; i < lineNum; i++) {
+        char* a = "  ", *b;
+        itoa(i, b, 10);
+        strcat(a, b);
+        ScreenPrint(0, i, a);
+    }*/
+    ScreenClear();
+    ScreenPrint(0, 0, "난이도 선택");
+    ScreenFlipping();
+    ScreenClear();
+    char diff[2];
+    y_SelectRender = 0;
+    ScreenPrint(0, 0, "난이도 선택");
+    for (int i = 0; i < lineNum+1; i++) {
+        char a[4] = "  ";
+        itoa(i+1, diff, 10);
+        strcat(a, diff);
+        ScreenPrint(0, i+1, a);
+        ScreenFlipping();
+        ScreenPrint(0, i+1, a);
+    }
+    ScreenPrint(0, 1, ">");
+    ScreenFlipping();
+    int y = 1;
+    while (1) {
+        if (GetAsyncKeyState(VK_UP) & 0x0001) {
+            if (y > 1)
+                y--;
+            SelectRender(y);
+        }
+        if (GetAsyncKeyState(VK_DOWN) & 0x0001) {
+            if (y < lineNum+1)
+                y++;
+            SelectRender(y);
+        }
+        if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
+            break;
+        }
+    }
+    StartGame(y-1);
+}
 
 void MapLoader(int y) {
     char mapLoc[106] = ".\\map\\";
     char buffer[BARSIZE];
     char** splitText, **chordSplit;
-    int lineNum, spaceCount, rest, nodeNum, nodeCount, chord;
+    int spaceCount, rest, nodeNum, nodeCount, chord;
     strcat(mapLoc, mapList[y]);
     mapLoc[strlen(mapLoc) - 1] = '\0';
     FILE* map = fopen(mapLoc, "r");
     fgets(buffer, BARSIZE, map);
-    speed = 0.125 / (atoi(buffer) / 60);
+    speed = 0.125 / (double)(atoi(buffer) / 60.0);
     
 
     while (strcmp(buffer, "finish")) {
@@ -238,12 +289,12 @@ void SelectMap() {
         if (GetAsyncKeyState(VK_UP) & 0x0001) {
             if (y > 0)
                 y--;
-            SelectMapRender(y);
+            SelectRender(y);
         }
         if (GetAsyncKeyState(VK_DOWN) & 0x0001) {
             if (y < mapCount - 1)
                 y++;
-            SelectMapRender(y);
+            SelectRender(y);
         }
         if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
             break;

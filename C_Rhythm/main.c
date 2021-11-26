@@ -2,12 +2,14 @@
 
 int main()
 {
+    //srand(time(NULL));
     system("mode con cols=140 lines=32 | title kewool");
     ScreenInit();
     
     while (1) {
         CreateMain();
         SelectMap();
+        SelectDiff();
     }
 
 
