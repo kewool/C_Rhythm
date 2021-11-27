@@ -54,6 +54,14 @@
 
 #endif
 
+#ifndef MMSYSTEM
+
+#define MMSYSTEM
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
+
+#endif
+
 #ifndef COLORLIST
 #define COLORLIST
 enum {

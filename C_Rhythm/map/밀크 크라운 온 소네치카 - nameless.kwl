@@ -1,0 +1,29 @@
+255
+
+start #1
+0r
+0r
+0r
+0r
+4n 4n 4n 4n 4n 4n 4n 3n 3n 4n 4n 4n 4n 4n
+4n 4n 4n 4n 4n 4n 4n 3n 3n 4n 3n 3n
+4n 4n 4n 4n 4n 4n 4n 3n 3n 4n 4n 4n 4n 4n
+4n 4n 4n 3n 3n 3n 3n 4n 3n 3r
+2n 2n 3n 3n 3n 3n
+3n 3n 3n 3n 3n 3n 3n 3n
+4n 4n 4n 4n 3n 3n 4n 4n 4n 4n 3n 3n
+&
+start #2
+4n 4n 4n 3n 3n 3n 3n 4n 4n 3.n
+3n 3n 3r 4n 3n 3n 4r 3.n 4r
+4n 4n 4n 3n 3n 3n 3n 4n 4n 3.n
+3n 3n 3r 4n 3n 3n 4n 3n 3r
+4r 4n 4r 3n 3r 3n 3r 4n 4r 3.n
+3r 3n 3r 4n 3r 3n 4r 3.n 4r
+4r 4n 4r 3n 3r 3n 3r 4n 4r 3.n
+3n 3n 4r 3n 3n 3n 4n 3n 3r
+0r
+0r
+2.r 3n 2.r 3n
+
+finish

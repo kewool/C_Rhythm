@@ -10,6 +10,8 @@ int mapLine[6][20000];
 double speed;
 int gameScreen[24][6];
 int nodeArray[8][5] = { {2,4,6,8,10},{14,16,18,20,22},{26,28,30,32,34},{38,40,42,44,46},{50,52,54,56,58},{62,64,66,68,70},{74,76,78,80,82},{86,88,90,92,94} };
+char musicName[106]= ".\\map\\";
+wchar_t musicLoc[106];
 
 void push(int queue[]) {
     for (int i = 23; i > 0; i--) {
@@ -236,6 +238,11 @@ void StartGame(int diffNum) {
             gameScreen[i][j] = 1;
 
     int line[6];
+    Sleep(speed * 1000.0 * 2*20);
+    if (strstr(musicName, "밀크 크라운 온 소네치카 - nameless.wav"));
+        PlaySound(L".\\map\\밀크 크라운 온 소네치카 - nameless.wav", NULL, SND_FILENAME | SND_ASYNC);
+
+    Sleep(speed * 1000.0 * 2);
     for (int i = 0; mapLine[0][i]; i++) {
         for (int j = 0; j < 6; j++) {
             line[j] = mapLine[j][i];
@@ -284,10 +291,31 @@ void StartGame(int diffNum) {
                 itoa(gameScreen[j][k], a, 10);
                 ScreenPrint(k, j, a);*/
             }
+
+            
         }
-        
+        if (GetAsyncKeyState(0x53) & 0x0001) {
+            if (gameScreen[19][0] != 2) {
+                
+            }
+        }
+        if (GetAsyncKeyState(0x44) & 0x0001) {
+            
+        }
+        if (GetAsyncKeyState(0x46) & 0x0001) {
+
+        }
+        if (GetAsyncKeyState(0x4A) & 0x0001) {
+
+        }
+        if (GetAsyncKeyState(0x4B) & 0x0001) {
+
+        }
+        if (GetAsyncKeyState(0x4C) & 0x0001) {
+
+        }
         ScreenFlipping();
-        Sleep(speed*1000);
+        Sleep(speed * 1000.0*1.59);
     }
 }
 
@@ -373,6 +401,10 @@ void MapLoader(int y) {
     char** splitText, **chordSplit;
     int spaceCount=0, rest, nodeNum, nodeCount, chord;
     strcat(mapLoc, mapList[y]);
+    strcat(musicName, mapList[y]);
+    musicName[strlen(musicName) - 5] = '\0';
+    strcat(musicName, ".wav");
+    //swprintf(musicLoc, 106, "%hs", musicName);
     mapLoc[strlen(mapLoc) - 1] = '\0';
     FILE* map = fopen(mapLoc, "r");
     fgets(buffer, BARSIZE, map);
