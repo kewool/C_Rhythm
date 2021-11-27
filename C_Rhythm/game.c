@@ -77,6 +77,7 @@ void ReadMapList() {
 }
 
 void CreateMain() {
+    ScreenClear();
     memset(mapNode, 0, sizeof(mapNode));
     memset(mapLine, 0, sizeof(mapLine));
     ReadMapList();
@@ -188,8 +189,8 @@ void CreateFrame() {
 void Result() {
     ScreenPrintFront(74, 18, "계속하려면 공백을 눌러주세요.");
     while (1) {
-        if (GetAsyncKeyState(0x44) & 0x0001) {
-            
+        if (GetAsyncKeyState(VK_SPACE) & 0x0001) {
+            break;
         }
     }
 }
@@ -434,6 +435,10 @@ void SelectDiff() {
         if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
             break;
         }
+        /*if (GetAsyncKeyState(VK_ESCAPE) & 0x0001) {
+            CreateMain();
+            SelectMap();
+        }*/
     }
     StartGame(y);
 }

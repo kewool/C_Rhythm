@@ -6,11 +6,11 @@ int main()
     system("mode con cols=140 lines=34 | title kewool");
     ScreenInit();
     
-    //while (1) {
+    while (1) {
         CreateMain();
         SelectMap();
         SelectDiff();
-    //}
+    }
 
 
     //g_numofFPS = 0;
