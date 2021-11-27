@@ -102,3 +102,9 @@ char* str(int size) {
 
 	return string;
 }
+
+void SetColor(int foreground, int background) {
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	int code = foreground + background * 16;
+	SetConsoleTextAttribute(consoleHandle, code);
+}

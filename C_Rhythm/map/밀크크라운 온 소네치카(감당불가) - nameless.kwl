@@ -5,13 +5,13 @@ start #1
 0r
 0r
 0r
-4n 4n 4n 4n 4n 4n 4n 3n*2 3n*2 4n*2 4n 4n 4n 4n
-4n 4n 4n 4n 4n 4n 4n 3n*2 3n*2 4n*2 3n*2 3n*2
-4n 4n 4n 4n 4n 4n 4n 3n*2 3n*2 4n*2 4n 4n 4n 4n
+4n 4n 4n 4n 4n 4n 4n 3n 3n 4n 4n 4n 4n 4n
+4n 4n 4n 4n 4n 4n 4n 3n 3n 4n 3n 3n
+4n 4n 4n 4n 4n 4n 4n 3n 3n 4n 4n 4n 4n 4n
 4n 4n 4n 3n 3n 3n 3n 4n 3n 3r
-2n 2n 3n*2 3n*2 3n*2 3n*2
-3n*2 3n*2 3n*2 3n*2 3n*2 3n*2 3n*2 3n*2
-4n*2 4n*2 4n*2 4n*2 3n*2 3n 4n*2 4n*2 4n*2 4n*2 3n*2 3n
+2n 2n 3n 3n 3n 3n
+3n 3n 3n 3n 3n 3n 3n 3n
+4n 4n 4n 4n 3n 3n 4n 4n 4n 4n 3n 3n
 &
 start #2
 4n 4n 4n 3n 3n 3n 3n 4n 4n 3.n

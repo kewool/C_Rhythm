@@ -3,14 +3,14 @@
 int main()
 {
     srand(time(NULL));
-    system("mode con cols=140 lines=32 | title kewool");
+    system("mode con cols=140 lines=34 | title kewool");
     ScreenInit();
     
-    while (1) {
+    //while (1) {
         CreateMain();
         SelectMap();
         SelectDiff();
-    }
+    //}
 
 
     //g_numofFPS = 0;

@@ -26,11 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="map\밀크크라운 온 소네치카 - nameless.kwl">
-      <Filter>리소스 파일</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="main.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -40,5 +35,10 @@
     <ClInclude Include="game.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="map\밀크크라운 온 소네치카%28감당불가%29 - nameless.kwl">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>

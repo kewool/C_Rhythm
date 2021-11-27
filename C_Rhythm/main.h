@@ -46,3 +46,32 @@
 #include <string.h>
 
 #endif
+
+#ifndef WCHAR
+
+#define WCHAR
+#include <wchar.h>
+
+#endif
+
+#ifndef COLORLIST
+#define COLORLIST
+enum {
+	black,
+	blue,
+	green,
+	cyan,
+	red,
+	purple,
+	brown,
+	lightgray,
+	darkgray,
+	lightblue,
+	lightgreen,
+	lightcyan,
+	lightred,
+	lightpurple,
+	yellow,
+	white
+};
+#endif
