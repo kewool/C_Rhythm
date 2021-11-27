@@ -185,6 +185,15 @@ void CreateFrame() {
     }
 }
 
+void Result() {
+    ScreenPrintFront(74, 18, "계속하려면 공백을 눌러주세요.");
+    while (1) {
+        if (GetAsyncKeyState(0x44) & 0x0001) {
+            
+        }
+    }
+}
+
 void StartGame(int diffNum) {
     ScreenClear();
     for (int i = 0; i < diffNum + 1; i++) {
@@ -236,12 +245,14 @@ void StartGame(int diffNum) {
     for (int i = 0; i < 22; i++)
         for (int j = 0; j < 6; j++)
             gameScreen[i][j] = 1;
-
+    
     int line[6];
     Sleep(speed * 1000.0 * 2*20);
-    if (strstr(musicName, "밀크 크라운 온 소네치카 - nameless.wav"));
+    if (strstr(musicName, "밀크 크라운 온 소네치카 - nameless.wav"))
         PlaySound(L".\\map\\밀크 크라운 온 소네치카 - nameless.wav", NULL, SND_FILENAME | SND_ASYNC);
-
+    char accuracy[20];
+    int accuracyAll = 1;
+    int accuracyRight = 0;
     Sleep(speed * 1000.0 * 2);
     for (int i = 0; mapLine[0][i]; i++) {
         for (int j = 0; j < 6; j++) {
@@ -257,66 +268,98 @@ void StartGame(int diffNum) {
                     for (int l = 0; l < 5; l++) {
 
                     }*/
-
                 switch (gameScreen[j][k]) {
                 case 0:
                     for (int l = 0; l < 5; l++) {
                         /*if(!gameScreen[0][l])
                             for (int j = 0; j < 5; j++)
                                 ScreenPrint(nodeArray[l][j], 0, "▣");*/
-
                         if (j != 1 && j != 22)
                             ScreenPrint(nodeArray[k][l], j - 1, "　");
-
-
                         //if (!gameScreen[1][l])
                         //    for (int j = 0; j < 5; j++)
                         //        ScreenPrint(nodeArray[k][j], 0, "▣");
                     }
-                    
                     break;
                 case 2:
                     for (int l = 0; l < 5; l++) {
-
                         ScreenPrint(nodeArray[k][l], j, "■");
-
                         if (j == 22)
                             ScreenPrint(nodeArray[k][l], j, "　");
-
                     }
                     break;
                 }
-
+                
                 /*char a[2];
                 itoa(gameScreen[j][k], a, 10);
                 ScreenPrint(k, j, a);*/
             }
-
             
         }
+        if (gameScreen[21][0] == 2 || gameScreen[21][1] == 2 || gameScreen[21][2] == 2 || gameScreen[21][3] == 2 || gameScreen[21][4] == 2 || gameScreen[21][5] == 2) {
+            accuracyAll++;
+        }
         if (GetAsyncKeyState(0x53) & 0x0001) {
-            if (gameScreen[19][0] != 2) {
-                
+            if (gameScreen[19][0] == 2 || gameScreen[20][0] == 2 || gameScreen[21][0] == 2) {
+                accuracyRight++;
+            }
+            else {
+                accuracyAll++;
             }
         }
         if (GetAsyncKeyState(0x44) & 0x0001) {
-            
+            if (gameScreen[19][1] == 2 || gameScreen[20][1] == 2 || gameScreen[21][1] == 2) {
+                accuracyRight++;
+            }
+            else {
+                accuracyAll++;
+            }
         }
         if (GetAsyncKeyState(0x46) & 0x0001) {
-
+            if (gameScreen[19][2] == 2 || gameScreen[20][2] == 2 || gameScreen[21][2] == 2) {
+                accuracyRight++;
+            }
+            else {
+                accuracyAll++;
+            }
         }
         if (GetAsyncKeyState(0x4A) & 0x0001) {
-
+            if (gameScreen[19][3] == 2 || gameScreen[20][3] == 2 || gameScreen[21][3] == 2) {
+                accuracyRight++;
+            }
+            else {
+                accuracyAll++;
+            }
         }
         if (GetAsyncKeyState(0x4B) & 0x0001) {
-
+            if (gameScreen[19][4] == 2 || gameScreen[20][4] == 2 || gameScreen[21][4] == 2) {
+                accuracyRight++;
+            }
+            else {
+                accuracyAll++;
+            }
         }
         if (GetAsyncKeyState(0x4C) & 0x0001) {
-
+            if (gameScreen[19][5] == 2 || gameScreen[20][5] == 2 || gameScreen[21][5] == 2) {
+                accuracyRight++;
+            }
+            else {
+                accuracyAll++;
+            }
+        }
+        if (accuracyAll) {
+            sprintf(accuracy, "정확도: %.1lf", (double)accuracyRight / (double)accuracyAll * 100.0);
+            ScreenPrintFront(74, 17, accuracy);
+            ScreenPrint(74, 17, accuracy);
+        }
+        else {
+            ScreenPrintFront(74, 17, "정확도: 0.0");
         }
         ScreenFlipping();
-        Sleep(speed * 1000.0*1.59);
+        Sleep(speed * 1000.0*1.565);
+        //Sleep(500);
     }
+    Result();
 }
 
 void SelectDiff() {

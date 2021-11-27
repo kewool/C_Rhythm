@@ -13,3 +13,4 @@ void ScreenPrint(int x, int y, char* string);
 char** split(char* sentence, char separator, int* num_tokens);
 char* str(int size);
 void SetColor(int foreground, int background);
+void ScreenPrintFront(int x, int y, char* string);

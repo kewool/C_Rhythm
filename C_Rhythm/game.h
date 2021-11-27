@@ -12,3 +12,5 @@ void MapLoader(int y);
 void SelectMap();
 void StartGame(int diffNum);
 void CreateFrame();
+void push(int queue[]);
+void Result();

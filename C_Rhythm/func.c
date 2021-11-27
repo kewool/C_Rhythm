@@ -45,6 +45,14 @@ void ScreenPrint(int x, int y, char* string)
     WriteFile(g_hScreen[g_nScreenIndex], string, strlen(string), &dw, NULL);
 }
 
+void ScreenPrintFront(int x, int y, char* string)
+{
+	DWORD dw;
+	COORD CursorPosition = { x, y };
+	SetConsoleCursorPosition(g_hScreen[!g_nScreenIndex], CursorPosition);
+	WriteFile(g_hScreen[!g_nScreenIndex], string, strlen(string), &dw, NULL);
+}
+
 char** split(char* sentence, char separator, int* num_tokens) {
 	char** tokens;
 	int* lengths;
