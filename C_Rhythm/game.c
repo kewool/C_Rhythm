@@ -26,7 +26,7 @@ void push(int queue[]) {
         for (int j = 0; j < 6; j++) {
             if (i == 1 && gameScreen[i][j] > 1 && queue[j] == 1)
                 queue[j] = 0;
-            else if (gameScreen[i][j] > 1 && gameScreen[i - 1][j] != 2)
+            else if (gameScreen[i][j] == 2 && gameScreen[i - 1][j] != 2)
                 gameScreen[i - 1][j] = 0;
         }
     }
@@ -170,7 +170,7 @@ void CreateFrame() {
         x = 2;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
-                ScreenPrint(x, 16, "■");
+                ScreenPrint(x, 16, "□");
                 x += 2;
             }
             if (i != 5) {
@@ -187,7 +187,7 @@ void CreateFrame() {
 }
 
 void Result() {
-    ScreenPrintFront(74, 18, "계속하려면 공백을 눌러주세요.");
+    ScreenPrintFront(0, 25, "계속하려면 공백을 눌러주세요.");
     while (1) {
         if (GetAsyncKeyState(VK_SPACE) & 0x0001) {
             break;
@@ -248,13 +248,15 @@ void StartGame(int diffNum) {
             gameScreen[i][j] = 1;
     
     int line[6];
-    Sleep(speed * 1000.0 * 2*20);
+    speed = speed * 1000.0;
+    //Sleep(speed * 2*20);
     if (strstr(musicName, "밀크 크라운 온 소네치카 - nameless.wav"))
         PlaySound(L".\\map\\밀크 크라운 온 소네치카 - nameless.wav", NULL, SND_FILENAME | SND_ASYNC);
     char accuracy[20];
     int accuracyAll = 1;
     int accuracyRight = 0;
-    Sleep(speed * 1000.0 * 2);
+    Sleep(speed * 2);
+        
     for (int i = 0; mapLine[0][i]; i++) {
         for (int j = 0; j < 6; j++) {
             line[j] = mapLine[j][i];
@@ -277,6 +279,8 @@ void StartGame(int diffNum) {
                                 ScreenPrint(nodeArray[l][j], 0, "▣");*/
                         if (j != 1 && j != 17)
                             ScreenPrint(nodeArray[k][l], j - 1, "　");
+                        else if(j == 17)
+                            ScreenPrint(nodeArray[k][l], j - 1, "□");
                         //if (!gameScreen[1][l])
                         //    for (int j = 0; j < 5; j++)
                         //        ScreenPrint(nodeArray[k][j], 0, "▣");
@@ -357,7 +361,7 @@ void StartGame(int diffNum) {
             ScreenPrintFront(74, 12, "정확도: 0.0");
         }
         ScreenFlipping();
-        Sleep(speed * 1000.0*1.45);
+        Sleep(speed);
         //Sleep(500);
     }
     Result();
@@ -456,7 +460,8 @@ void MapLoader(int y) {
     mapLoc[strlen(mapLoc) - 1] = '\0';
     FILE* map = fopen(mapLoc, "r");
     fgets(buffer, BARSIZE, map);
-    speed = 0.125 / (double)(atoi(buffer) / 60.0);
+    //speed = 0.125 / ((double)atoi(buffer) / 60.0);
+    speed = 60.0 / (8.0 * (double)atoi(buffer));
     chordSplit = split("0n*2", '*');
 
     while (strcmp(buffer, "finish")) {
