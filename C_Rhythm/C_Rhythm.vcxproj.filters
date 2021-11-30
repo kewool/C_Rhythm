@@ -40,10 +40,8 @@
     <None Include="map\밀크 크라운 온 소네치카 - nameless.kwl">
       <Filter>리소스 파일</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="map\밀크 크라운 온 소네치카 - nameless.wav">
+    <None Include="map\데이브레이크 프론트라인 - 온유.kwl">
       <Filter>리소스 파일</Filter>
-    </Media>
+    </None>
   </ItemGroup>
 </Project>

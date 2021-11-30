@@ -149,10 +149,8 @@
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="map\데이브레이크 프론트라인 - 온유.kwl" />
     <None Include="map\밀크 크라운 온 소네치카 - nameless.kwl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="map\밀크 크라운 온 소네치카 - nameless.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

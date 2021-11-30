@@ -7,11 +7,9 @@ void ScreenInit()
 {
     CONSOLE_CURSOR_INFO cci;
 
-    // 화면 버퍼 2개를 만든다.
     g_hScreen[0] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
     g_hScreen[1] = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
 
-    // 커서를 숨긴다.
     cci.dwSize = 1;
     cci.bVisible = FALSE;
     SetConsoleCursorInfo(g_hScreen[0], &cci);
