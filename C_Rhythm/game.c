@@ -3,19 +3,18 @@
 char mapList[31][100];
 
 int mapCount = 0;
-int lineNum;
-int y_SelectRender;
+int lineNum, y_SelectRender, accuracyCalc;
 int mapNode[10][10000];
-int mapLine[6][10000];
+int mapLine[LINE][10000];
 double speed, delay;
-int gameScreen[34][6];
+int gameScreen[34][LINE];
 int nodeArray[8][5] = { {2,4,6,8,10},{14,16,18,20,22},{26,28,30,32,34},{38,40,42,44,46},{50,52,54,56,58},{62,64,66,68,70},{74,76,78,80,82},{86,88,90,92,94} };
 char musicName[106]= ".\\map\\";
 wchar_t musicLoc[106];
 
 void push(int queue[]) {
     for (int i = 33; i > 0; i--) {
-        for (int j = 0; j < 6; j++) {
+        for (int j = 0; j < LINE; j++) {
             gameScreen[i][j] = gameScreen[i - 1][j] ? gameScreen[i - 1][j] : gameScreen[i - 1][j] + 1;
             /*if (i == 1 && gameScreen[i][j] > 1 && queue[j] == 1)
                 queue[j] = 0;
@@ -23,14 +22,14 @@ void push(int queue[]) {
                 gameScreen[i - 1][j] = 0;*/
         }
     }for (int i = 33; i > 0; i--) {
-        for (int j = 0; j < 6; j++) {
+        for (int j = 0; j < LINE; j++) {
             if (i == 1 && gameScreen[i][j] > 1 && queue[j] == 1)
                 queue[j] = 0;
             else if ((gameScreen[i][j] == 2 && gameScreen[i - 1][j] != 2)|| (gameScreen[i][j] == 3 && gameScreen[i - 1][j] != 3))
                 gameScreen[i - 1][j] = 0;
         }
     }
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < LINE; i++)
         gameScreen[0][i] = queue[i];
 }
 
@@ -146,12 +145,12 @@ void CreateFrame() {
         ScreenClear();
         ScreenPrint(0, 0, "┌");
         int x = 2;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < LINE; i++) {
             for (int j = 0; j < 5; j++) {
                 ScreenPrint(x, 0, "▣");
                 x += 2;
             }
-            if (i != 5) {
+            if (i != LINE-1) {
                 ScreenPrint(x, 0, "─");
                 x += 2;
             }
@@ -161,19 +160,19 @@ void CreateFrame() {
             x = 0;
             ScreenPrint(x, y, "│");
             x += 2;
-            for (int i = 0; i < 35; i++, x += 2) {
+            for (int i = 0; i < 6*LINE-1; i++, x += 2) {
                 ScreenPrint(x, y, "　");
             }
             ScreenPrint(x, y, "│");
         }
         ScreenPrint(0, 31, "└");
         x = 2;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < LINE; i++) {
             for (int j = 0; j < 5; j++) {
                 ScreenPrint(x, 31, "□");
                 x += 2;
             }
-            if (i != 5) {
+            if (i !=LINE-1) {
                 ScreenPrint(x, 31, "─");
                 x += 2;
             }
@@ -186,7 +185,7 @@ void CreateFrame() {
     }
 }
 
-void Result() {
+void Result(int accuracy) {
     ScreenPrintFront(0, 33, "계속하려면 공백을 눌러주세요.");
     while (1) {
         if (GetAsyncKeyState(VK_SPACE) & 0x0001) {
@@ -200,13 +199,13 @@ void StartGame(int diffNum) {
     for (int i = 0; i < diffNum + 1; i++) {
         for (int j = 0; mapNode[i][j] != 0; j++) {
             if(!mapLine[i][j])
-                for(int k = 0; k < 6; k++)
+                for(int k = 0; k < LINE; k++)
                     mapLine[k][j] = 1;
             
             if (mapNode[i][j] == 1) continue;
             else if (mapNode[i][j] > 1) {
                 for (int k = 0; k < mapNode[i][j] - 1; k++) {
-                    mapLine[rand() % 6][j] = 2;
+                    mapLine[rand() % LINE][j] = 2;
                 }
             }
             //mapLine[rand() % 8][j] = mapNode[i][j];
@@ -244,12 +243,13 @@ void StartGame(int diffNum) {
     //printf("%s", 0xa3);
     //printf(L"┌▣▣▣▣▣─▣▣▣▣▣─▣▣▣▣▣─▣▣▣▣▣─▣▣▣▣▣─▣▣▣▣▣─▣▣▣▣▣─▣▣▣▣▣┐");
     for (int i = 0; i < 32; i++)
-        for (int j = 0; j < 6; j++)
+        for (int j = 0; j < LINE; j++)
             gameScreen[i][j] = 1;
     
-    int line[6], start, end;
+    int line[LINE], start, end;
     double accuracyNum;
     speed = speed * 1000.0;
+    //speed -= delay;
     //Sleep(speed * 2*20);
     char accuracy[20];
     int accuracyAll = 0;
@@ -263,20 +263,23 @@ void StartGame(int diffNum) {
         start = clock();
         
         //if (_kbhit()) {
-            if (GetAsyncKeyState(0x53) & 0x8001) {
+            if (GetAsyncKeyState(0x53) & 0x8000) {
                 for (int i = 2; i < 11; i += 2) {
                     ScreenPrintFront(i, 31, "▣");
                 }
                 if (gameScreen[29][0] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[29][0] = 3;
                 }
                 else if (gameScreen[30][0] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[30][0] = 3;
                 }
                 else if (gameScreen[31][0] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[31][0] = 3;
                 }
                 /*else {
@@ -288,20 +291,23 @@ void StartGame(int diffNum) {
                     ScreenPrint(i, 31, "□");
                 }
             }
-            if (GetAsyncKeyState(0x44) & 0x8001) {
+            if (GetAsyncKeyState(0x44) & 0x8000) {
                 for (int i = 14; i < 23; i += 2) {
                     ScreenPrintFront(i, 31, "▣");
                 }
                 if (gameScreen[29][1] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[29][1] = 3;
                 }
                 else if (gameScreen[30][1] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[30][1] = 3;
                 }
                 else if (gameScreen[31][1] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[31][1] = 3;
                 }
                 /*else {
@@ -313,20 +319,23 @@ void StartGame(int diffNum) {
                     ScreenPrint(i, 31, "□");
                 }
             }
-            if (GetAsyncKeyState(0x46) & 0x8001) {
+            if (GetAsyncKeyState(0x46) & 0x8000) {
                 for (int i = 26; i < 35; i += 2) {
                     ScreenPrintFront(i, 31, "▣");
                 }
                 if (gameScreen[29][2] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[29][2] = 3;
                 }
                 else if (gameScreen[30][2] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[30][2] = 3;
                 }
                 else if (gameScreen[31][2] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[31][2] = 3;
                 }
                 /*else {
@@ -338,20 +347,23 @@ void StartGame(int diffNum) {
                     ScreenPrint(i, 31, "□");
                 }
             }
-            if (GetAsyncKeyState(0x4A) & 0x8001) {
+            if (GetAsyncKeyState(0x4A) & 0x8000) {
                 for (int i = 38; i < 47; i += 2) {
                     ScreenPrintFront(i, 31, "▣");
                 }
                 if (gameScreen[29][3] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[29][3] = 3;
                 }
                 else if (gameScreen[30][3] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[30][3] = 3;
                 }
                 else if (gameScreen[31][3] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[31][3] = 3;
                 }
                 /*else {
@@ -363,20 +375,23 @@ void StartGame(int diffNum) {
                     ScreenPrint(i, 31, "□");
                 }
             }
-            if (GetAsyncKeyState(0x4B) & 0x8001) {
+            if (GetAsyncKeyState(0x4B) & 0x8000) {
                 for (int i = 50; i < 59; i += 2) {
                     ScreenPrintFront(i, 31, "▣");
                 }
                 if (gameScreen[29][4] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[29][4] = 3;
                 }
                 else if (gameScreen[30][4] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[30][4] = 3;
                 }
                 else if (gameScreen[31][4] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[31][4] = 3;
                 }
                 /*else {
@@ -388,20 +403,23 @@ void StartGame(int diffNum) {
                     ScreenPrint(i, 31, "□");
                 }
             }
-            if (GetAsyncKeyState(0x4C) & 0x8001) {
+            if (GetAsyncKeyState(0x4C) & 0x8000) {
                 for (int i = 62; i < 71; i += 2) {
                     ScreenPrintFront(i, 31, "▣");
                 }
                 if (gameScreen[29][5] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[29][5] = 3;
                 }
                 else if (gameScreen[30][5] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[30][5] = 3;
                 }
                 else if (gameScreen[31][5] == 2) {
                     accuracyRight++;
+                    accuracyAll++;
                     gameScreen[31][5] = 3;
                 }
                 /*else {
@@ -413,14 +431,17 @@ void StartGame(int diffNum) {
                     ScreenPrint(i, 31, "□");
                 }
             }
-            if (GetAsyncKeyState(VK_ESCAPE) & 0x0001) {
+            if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
                 break;
             }
             
-
-        if (gameScreen[31][0] > 1 || gameScreen[31][1] > 1 || gameScreen[31][2] > 1 || gameScreen[31][3] > 1 || gameScreen[31][4] > 1 || gameScreen[31][5] > 1) {
+            for (int i = 0; i < LINE; i++) {
+                if (gameScreen[31][i] == 2)
+                    accuracyAll++;
+            }
+        /*if (gameScreen[31][0] > 1 || gameScreen[31][1] > 1 || gameScreen[31][2] > 1 || gameScreen[31][3] > 1 || gameScreen[31][4] > 1 || gameScreen[31][5] > 1) {
             accuracyAll++;
-        }
+        }*/
         //}
         if (accuracyAll) {
             accuracyNum = (double)accuracyRight / (double)accuracyAll * 100.0;
@@ -433,12 +454,12 @@ void StartGame(int diffNum) {
         else {
             ScreenPrintFront(0, 32, "정확도: 0.0");
         }
-        for (int j = 0; j < 6; j++) {
+        for (int j = 0; j < LINE; j++) {
             line[j] = mapLine[j][i];
         }
         push(line);
         for (int j = 32; j > 0; j--) {
-            for (int k = 0; k < 6; k++) {
+            for (int k = 0; k < LINE; k++) {
                 /*if (!gameScreen[j][k])
                     for (int l = 0; l < 5; l++)
                         ScreenPrint(j, nodeArray[k][l], "　");
@@ -478,7 +499,7 @@ void StartGame(int diffNum) {
         }
         ScreenFlipping();
         end = clock();
-        Sleep(speed - (end - start)-delay);
+        Sleep(speed - (end - start) - delay);
         //Sleep(500);
     }
     PlaySound(NULL, 0, 0);
@@ -557,7 +578,7 @@ void SelectDiff() {
             start = 1;
             break;
         }
-        if (GetAsyncKeyState(VK_ESCAPE) & 0x0001) {
+        if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
             break;
         }
     }
@@ -767,7 +788,7 @@ void SelectMap() {
                 y++;
             SelectRender(y);
         }
-        if (GetAsyncKeyState(VK_RETURN) & 0x0001) {
+        if (GetAsyncKeyState(VK_RETURN) & 0x8000) {
             break;
         }
     }
